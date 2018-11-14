@@ -19,14 +19,16 @@ package clusterapi
 import (
 	"github.com/stretchr/testify/assert"
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider"
+	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider/clusterapi/fake"
 	"testing"
 )
 
-func newTestMachineManager(t *testing.T) *MachineManagerMock {
-	manager := new(MachineManagerMock)
+func newTestMachineManager(t *testing.T) *fake.MachineManagerMock {
+	manager := new(fake.MachineManagerMock)
 
 	return manager
 }
+
 func newTestProvider(t *testing.T) *ClusterapiCloudProvider {
 	manager := newTestMachineManager(t)
 	resourceLimiter := cloudprovider.NewResourceLimiter(
