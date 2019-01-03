@@ -104,8 +104,13 @@ func TestDeploymentsAndNodes(t *testing.T) {
 
 	m3 := buildTestMachine(ms1, "m3", nil)
 
-	coreApiClient := corefake.NewSimpleClientset(n1, n2)
-	clusterApiClient := clusterfake.NewSimpleClientset(m1, m2, m3, ms1, md1, md2, md3)
+	ms2 := buildTestMachineSet(md3, "ms2", 2)
+
+	n4 := buildTestNode("n4")
+	m4 := buildTestMachine(ms2, "m4", n4)
+
+	coreApiClient := corefake.NewSimpleClientset(n1, n2, n4)
+	clusterApiClient := clusterfake.NewSimpleClientset(m1, m2, m3, m4, ms1, ms2, md1, md2, md3)
 
 	mm := NewMachineManagerFromApiStubs(coreApiClient, clusterApiClient)
 	err := mm.Refresh()
@@ -122,11 +127,13 @@ func TestDeploymentsAndNodes(t *testing.T) {
 	assert.Equal(t, md2, mm.DeploymentForNode(n2))
 	assert.NotEqual(t, md1, mm.DeploymentForNode(n2))
 
+	assert.Nil(t, mm.NodesForDeployment(md1))
+	assert.Nil(t, mm.NodesForDeployment(md3))
 	nodes := mm.NodesForDeployment(md2)
 	assert.Len(t, nodes, 2)
 	assert.Contains(t, nodes, n1)
 	assert.Contains(t, nodes, n2)
 
-	mm.SetDeploymentSize(md2, 5)
+	assert.Nil(t, mm.SetDeploymentSize(md2, 5))
 	assert.Equal(t, int32(5), *md2.Spec.Replicas)
 }
