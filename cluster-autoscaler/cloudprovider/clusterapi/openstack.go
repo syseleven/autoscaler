@@ -80,13 +80,13 @@ var knownFlavors = map[string]struct{ ram, disk, vcpus int64 }{
 }
 
 func buildNodeFromOpenstackMachineDeployment(md *v1alpha1.MachineDeployment) (*apiv1.Node, error) {
-	providerConfig := md.Spec.Template.Spec.ProviderConfig
+	providerSpec := md.Spec.Template.Spec.ProviderSpec
 
-	if providerConfig.Value == nil {
+	if providerSpec.Value == nil {
 		return nil, fmt.Errorf("providerconfig.value is nil")
 	}
 	pconfig := parsedProviderConfig{}
-	err := json.Unmarshal(providerConfig.Value.Raw, &pconfig)
+	err := json.Unmarshal(providerSpec.Value.Raw, &pconfig)
 	if err != nil {
 		return nil, err
 	}

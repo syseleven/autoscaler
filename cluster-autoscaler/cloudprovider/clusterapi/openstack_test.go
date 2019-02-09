@@ -43,7 +43,7 @@ func TestBuildNodeFromOpenstackMachineDeploymentWrongProviderConfig(t *testing.T
 		Spec: v1alpha1.MachineDeploymentSpec{
 			Template: v1alpha1.MachineTemplateSpec{
 				Spec: v1alpha1.MachineSpec{
-					ProviderConfig: v1alpha1.ProviderConfig{
+					ProviderSpec: v1alpha1.ProviderSpec{
 						Value: &runtime.RawExtension{
 							Raw: providerConfig,
 						},
@@ -72,7 +72,7 @@ func TestBuildNodeFromOpenstackMachineDeploymentUnknownFlavor(t *testing.T) {
 		Spec: v1alpha1.MachineDeploymentSpec{
 			Template: v1alpha1.MachineTemplateSpec{
 				Spec: v1alpha1.MachineSpec{
-					ProviderConfig: v1alpha1.ProviderConfig{
+					ProviderSpec: v1alpha1.ProviderSpec{
 						Value: &runtime.RawExtension{
 							Raw: providerConfig,
 						},
